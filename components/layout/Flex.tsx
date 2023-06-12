@@ -3,17 +3,15 @@ interface Props {
     justify?: string,
     align?: string,
     wrap?: boolean,
-    col?: boolean
+    col?: boolean,
+    w?: string, 
+    gap?: number
 }
 
-const Flex = ({ justify = 'justify-start', align = 'items-start', wrap, col, children }: Props) => {
+const Flex = ({w='w-full', justify = 'justify-start', align = 'items-start', wrap, col, gap=0, children }: Props) => {
     return (
         <div className={`
-            flex
-            ${wrap ? 'flex-wrap' : ''}
-            ${col ? 'flex-col' : ''}
-            ${justify}
-            ${align}
+            flex ${w} ${wrap ? 'flex-wrap' : ''} ${col ? 'flex-col' : ''} ${justify} ${align} ${w} gap-${gap}
         `}>
             {children}
         </div>

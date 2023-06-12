@@ -41,9 +41,9 @@ const Search = () => {
                     render={({ field }) => (
                         <FormItem className='relative'>
                             <FormControl className='relative'>
-                                <Input  placeholder="Search" {...field} />
+                                <Input className='bg-white dark:bg-transparent border-0 shadow-md transition-shadow duration-300 outline-none focus-within:shadow-sm pr-10 pl-5 rounded-full' placeholder="Search" {...field} />
                             </FormControl>
-                                <Button  type="submit" className={`absolute !p-0 h-auto bg-transparent text-dark dark:text-light !m-0 right-2 top-1/2 -translate-y-1/2 text-lg`}>
+                                <Button  type="submit" className={`absolute !bg-transparent hover:text-gray-500 transition-all !p-0 h-auto text-gray-600 dark:text-light !m-0 right-4 top-1/2 -translate-y-1/2 text-lg `}>
                                     <Icon icon='ion:search-outline' />
                                 </Button>
                             <FormMessage />
