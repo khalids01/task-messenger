@@ -69,7 +69,7 @@ dependencies:
     version: 18.2.4
   appwrite:
     specifier: ^11.0.0
-    version: 11.0.0
+    version: 11.0.0(encoding@0.1.13)
   autoprefixer:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.24)
@@ -135,6 +135,9 @@ devDependencies:
   '@types/react-beautiful-dnd':
     specifier: ^13.1.4
     version: 13.1.4
+  encoding:
+    specifier: ^0.1.13
+    version: 0.1.13
 
 packages:
 
@@ -1772,10 +1775,10 @@ packages:
       picomatch: 2.3.1
     dev: false
 
-  /appwrite@11.0.0:
+  /appwrite@11.0.0(encoding@0.1.13):
     resolution: {integrity: sha512-YqLDwfVexQNFrAom6DxROrSm5dgR0FO128H+TBGTMZFc5ebXRw+IAmUHCZO77AbTqZ3EduTQZl61f0PKmcywtQ==}
     dependencies:
-      cross-fetch: 3.1.5
+      cross-fetch: 3.1.5(encoding@0.1.13)
       isomorphic-form-data: 2.0.0
     transitivePeerDependencies:
       - encoding
@@ -2065,10 +2068,10 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: false
 
-  /cross-fetch@3.1.5:
+  /cross-fetch@3.1.5(encoding@0.1.13):
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
-      node-fetch: 2.6.7
+      node-fetch: 2.6.7(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -2227,6 +2230,11 @@ packages:
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
     dev: false
+
+  /encoding@0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    dependencies:
+      iconv-lite: 0.6.3
 
   /enhanced-resolve@5.14.1:
     resolution: {integrity: sha512-Vklwq2vDKtl0y/vtwjSesgJ5MYS7Etuk5txS8VdKL4AOS1aUlD96zqIfsOSLQsdv3xgMRbtkWM8eG9XDfKUPow==}
@@ -2926,6 +2934,12 @@ packages:
     engines: {node: '>=14.18.0'}
     dev: false
 
+  /iconv-lite@0.6.3:
+    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      safer-buffer: 2.1.2
+
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
@@ -3392,7 +3406,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /node-fetch@2.6.7:
+  /node-fetch@2.6.7(encoding@0.1.13):
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -3401,6 +3415,7 @@ packages:
       encoding:
         optional: true
     dependencies:
+      encoding: 0.1.13
       whatwg-url: 5.0.0
     dev: false
 
@@ -3955,6 +3970,9 @@ packages:
       get-intrinsic: 1.2.1
       is-regex: 1.1.4
     dev: false
+
+  /safer-buffer@2.1.2:
+    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
   /scheduler@0.23.0:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
