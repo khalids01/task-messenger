@@ -7,20 +7,11 @@ import {
   DropResult,
   Droppable,
 } from "react-beautiful-dnd";
-import getTodosGroupedByColumn from "@/lib/getTodosGroupedByColumn";
 import { useBoardStore } from "@/store/BoardStore";
 import Container from "@/components/layout/Container";
-import { Badge } from "@/components/ui/badge";
-
-const Item = () => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle></CardTitle>
-      </CardHeader>
-    </Card>
-  );
-};
+import { Badge, badgeVariants } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@iconify/react";
 
 const Column = ({
   todos,
@@ -57,8 +48,41 @@ const Column = ({
               >
                 <h1 className="flex gap-4 justify-between">
                   <span>{idToColumnText[id]}</span>
-                  <Badge>{todos.length}</Badge>
+                  <Badge
+                    className={`${badgeVariants({ variant: "secondary" })}`}
+                  >
+                    {todos.length}
+                  </Badge>
                 </h1>
+
+                <div className="space-y-2">
+                  {todos.map((todo, index) => (
+                    <Draggable draggableId={todo.$id} index={index}>
+                      {(itemProvided) => (
+                        <div
+                          className="mt-4"
+                          draggableProps={itemProvided.draggableProps}
+                          draggableHandleProps={itemProvided.dragHandleProps}
+                          innerRef={itemProvided.innerRef}
+                        >
+                          <Card>
+                            <CardHeader className="py-2">
+                              <CardTitle className="text-md font-medium">
+                                {todo.title}
+                              </CardTitle>
+                            </CardHeader>
+                          </Card>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+
+                  {provided.placeholder}
+
+                  <Button>
+                    <Icon icon=''/>
+                  </Button>
+                </div>
               </div>
             )}
           </Droppable>
@@ -74,7 +98,6 @@ const Board = () => {
   useEffect(() => {
     getBoard();
   }, [getBoard]);
-
 
   const handleOnDragEnd = (result: DropResult) => {
     console.log(result);
@@ -96,7 +119,7 @@ const Board = () => {
                     <Column
                       todos={column.todos}
                       id={column.id}
-                      key={index}
+                      key={index + column.id}
                       i={index}
                     />
                   )
