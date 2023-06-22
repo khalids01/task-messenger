@@ -1,6 +1,7 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect } from "react";
+import Image from "next/image";
 import {
   DragDropContext,
   Draggable,
@@ -10,7 +11,7 @@ import {
 import { useBoardStore } from "@/store/BoardStore";
 import Container from "@/components/layout/Container";
 import { Badge, badgeVariants } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Icon } from "@iconify/react";
 
 const Column = ({
@@ -29,6 +30,7 @@ const Column = ({
     inprogress: "In Progress",
     done: "Done",
   };
+
   return (
     <Draggable draggableId={id} index={i}>
       {(provider) => (
@@ -57,20 +59,44 @@ const Column = ({
 
                 <div className="space-y-2">
                   {todos.map((todo, index) => (
-                    <Draggable draggableId={todo.$id} index={index}>
+                    <Draggable
+                      draggableId={todo.$id}
+                      index={index}
+                      key={todo.$id + index}
+                    >
                       {(itemProvided) => (
                         <div
                           className="mt-4"
-                          draggableProps={itemProvided.draggableProps}
-                          draggableHandleProps={itemProvided.dragHandleProps}
-                          innerRef={itemProvided.innerRef}
+                          {...itemProvided.draggableProps}
+                          {...itemProvided.dragHandleProps}
+                          ref={itemProvided.innerRef}
                         >
                           <Card>
-                            <CardHeader className="py-2">
-                              <CardTitle className="text-md font-medium">
-                                {todo.title}
+                            <CardHeader className="p-3">
+                              <CardTitle className="flex gap-2 items-center justify-between text-base font-normal">
+                                <span>{todo.title}</span>
+
+                                <Button
+                                  className={`${buttonVariants({
+                                    variant: "destructive",
+                                  })} rounded-full h-auto w-auto p-2 min-w-[30px]`}
+                                >
+                                  <Icon icon={"mingcute:close-fill"} />
+                                </Button>
                               </CardTitle>
                             </CardHeader>
+
+                            {todo.image ? (
+                              <CardContent>
+                                {/* <Image
+                                  src={todo.image.fileId}
+                                  alt={todo.title}
+                                  height={300}
+                                  width={400}
+                                  fill={true}
+                                /> */}
+                              </CardContent>
+                            ) : null}
                           </Card>
                         </div>
                       )}
@@ -79,9 +105,16 @@ const Column = ({
 
                   {provided.placeholder}
 
-                  <Button>
-                    <Icon icon=''/>
-                  </Button>
+                  <div className="flex justify-end pr-3 py-2">
+                    <Button
+                      className={` ${buttonVariants({
+                        variant: "success",
+                      })} rounded-full h-auto w-auto p-2 font-2xl cursor-pointer
+                    `}
+                    >
+                      <Icon icon="ph:plus-bold" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -93,14 +126,81 @@ const Column = ({
 };
 
 const Board = () => {
-  const { board, getBoard } = useBoardStore((state) => state);
+  const { board, getBoard, setBoard } = useBoardStore((state) => state);
 
   useEffect(() => {
     getBoard();
   }, [getBoard]);
 
   const handleOnDragEnd = (result: DropResult) => {
-    console.log(result);
+    const { destination, source, type } = result;
+
+    if (!destination) return;
+
+    if (type === "column") {
+      const entries = Array.from(board.columns.entries());
+      const [removed] = entries.splice(source.index, 1);
+
+      entries.splice(destination.index, 0, removed);
+      const rearrangedColumns = new Map(entries);
+      setBoard({
+        ...board,
+        columns: rearrangedColumns,
+      });
+    }
+
+    const columns = Array.from(board.columns);
+
+    const startColIndex = columns[Number(source.droppableId)];
+    const finishColIndex = columns[Number(destination.droppableId)];
+
+    const startCol: Column = {
+      id: startColIndex[0],
+      todos: startColIndex[1].todos,
+    };
+
+    const finishCol: Column = {
+      id: finishColIndex[0],
+      todos: finishColIndex[1].todos,
+    };
+
+    if (!startCol || !finishCol) return;
+
+    // return if position or col is same as before
+    if (source.index === destination.index && startCol === finishCol) return;
+
+    const newTodos = startCol.todos;
+    const [todoMoved] = newTodos.splice(source.index, 1);
+
+    if (startCol.id === finishCol.id) {
+      // same col but different position
+      newTodos.splice(destination.index, 0, todoMoved);
+      const newCol = {
+        id: startCol.id,
+        todos: newTodos,
+      };
+      const newColumn = new Map(board.columns);
+      newColumn.set(startCol.id, newCol);
+      setBoard({ ...board, columns: newColumn });
+    } else {
+      // different col
+      const finishTodos = Array.from(finishCol.todos);
+      finishTodos.splice(destination.index, 0, todoMoved);
+
+      const newColumn = new Map(board.columns);
+      const newCol = {
+        id: startCol.id,
+        todos: newTodos,
+      };
+
+      newColumn.set(startCol.id, newCol);
+      newColumn.set(finishCol.id, {
+        id: finishCol.id,
+        todos: finishTodos,
+      });
+
+      setBoard({ ...board, columns: newColumn });
+    }
   };
 
   return (
