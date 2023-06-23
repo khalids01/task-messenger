@@ -126,7 +126,9 @@ const Column = ({
 };
 
 const Board = () => {
-  const { board, getBoard, setBoard } = useBoardStore((state) => state);
+  const { board, getBoard, setBoard, updateTodoInDB } = useBoardStore(
+    (state) => state
+  );
 
   useEffect(() => {
     getBoard();
@@ -147,10 +149,11 @@ const Board = () => {
         ...board,
         columns: rearrangedColumns,
       });
+
+      return;
     }
 
     const columns = Array.from(board.columns);
-
     const startColIndex = columns[Number(source.droppableId)];
     const finishColIndex = columns[Number(destination.droppableId)];
 
@@ -198,6 +201,9 @@ const Board = () => {
         id: finishCol.id,
         todos: finishTodos,
       });
+
+      // Update in DB
+      updateTodoInDB(todoMoved, finishCol.id);
 
       setBoard({ ...board, columns: newColumn });
     }
